@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Compositores Musicales</title>
+    <link rel="stylesheet" th:href="@{/styles.css}">
+</head>
+
+<body>
+    <div class="container">
+        <h1>🎼 Lista de Compositores Musicales</h1>
+
+        <header th:replace="~{/header.html::miHeader}"></header>
+
+        <form class="search-form" id="search-form">
+            <input type="text" id="search-composer" placeholder="Buscar..." required>
+            <button type="submit">Buscar</button>
+        </form>
+
+        <div class="comp-list">
+            <div class="piece-card" th:each="composer : ${lista}">
+                <h2 th:text="${composer.nameComposer}">Nombre del compositor</h2>
+                <p><strong>Biografía:</strong> <span th:text="${composer.biography}"></span></p>
+                <p><strong>Fecha de Nacimiento:</strong> <span th:text="${composer.dob}"></span></p>
+                <p><strong>Fecha de Fallecimiento:</strong> <span th:text="${composer.dod}"></span></p>
+                <p><strong>Nacionalidad:</strong> <span th:text="${composer.nacionality}"></span></p>
+                <p><strong>Lugar de Nacimiento:</strong> <span th:text="${composer.bPlace}"></span></p>
+                <p><strong>Lugar de Fallecimiento:</strong> <span th:text="${composer.dPlace}"></span></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('search-form').addEventListener('submit', function (event) {
+            event.preventDefault(); // Evita el envío normal del formulario
+
+            // Obtiene el texto del input
+            const query = document.getElementById('search-composer').value.trim();
+
+            if (query) {
+                // Codifica los espacios y caracteres especiales
+                const safeQuery = encodeURIComponent(query);
+
+                // Construye la URL final segura
+                const url = `http://localhost:8080/composer/${safeQuery}`;
+
+                // Redirige al usuario
+                window.location.href = url;
+            }
+        });
+    </script>
+</body>
+
+</html>
